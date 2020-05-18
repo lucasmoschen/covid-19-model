@@ -1,8 +1,7 @@
 # Covid-19 Model 
 
 In this repository, you'll find the codes used to simulate the COVID-19 model in "A model for COVID-19 with
-isolation, quarantine and testing as control measures" (link arXiv quando tivermos ele), by M. S. Aronna,
-R. Guglielmi and L. M. Moschen. The repository is organized in this way:
+isolation, quarantine and testing as control measures" [https://arxiv.org/abs/2005.07661](https://arxiv.org/abs/2005.07661), by M. S. Aronna, R. Guglielmi and L. M. Moschen. The repository is organized in this way:
 
 ```bash
 ├── data
