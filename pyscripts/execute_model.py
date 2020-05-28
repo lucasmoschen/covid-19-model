@@ -69,14 +69,14 @@ import yaml
 import os
 import sys
 
-from dynamics_model import pbeta, pr, prho
-from dynamics_model import Dynamics
+#from dynamics_model import pbeta, pr, prho
+from dynamics_model import Dynamics, Parameters_Functions
 from calc_r0 import calc_R0
 
 class States(Dynamics): 
     
     def __init__(self, beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu, 
-                 initial,hmax):
+                 initial,p,hmax):
 
         """The init function orhganize the parameters. """
         self.beta = beta 
@@ -92,8 +92,9 @@ class States(Dynamics):
         self.mu = mu
         
         """ Initial Conditions"""
-        self.y0 = [initial['Ef_0'], initial['Er_0'], initial['If_0'], initial['Ir_0'], initial['Af_0'], initial['Ar_0'], 
-                   initial['Q_0'], initial['Sf_0'], initial['Sr_0'], initial['R_0'], initial['D_0'], initial['T_0']]
+        self.y0 = [initial['E_0']*(1 - p), initial['E_0']*p, initial['I_0']*(1- p), initial['I_0']*p, 
+                   initial['A_0']*(1 - p), initial['A_0']*p, initial['Q_0'], 
+                   initial['S_0']*(1 - p), initial['S_0']*p, initial['R_0'], initial['D_0'], initial['T_0']]
                    
         self.hmax = hmax
 
@@ -109,7 +110,7 @@ class States(Dynamics):
     
         print("INFO - Calling the Integration method method")
         odesolver = odeint(func = dynamics, y0 = self.y0, t = np.linspace(0,T,T+1), 
-                           hmax = self.hmax, full_output=1)
+                           hmax = self.hmax, full_output = 1)
         
         odesolver_var = odesolver[0].transpose()
         odesolver_info = odesolver[1]
@@ -128,6 +129,11 @@ def plotting(t,x, name):
     plt.savefig("../images/" + name)
 
 if __name__ == "__main__":
+
+    functions = Parameters_Functions()
+    pbeta = functions.pbeta
+    prho = functions.prho
+    pr = functions.pr
 
     print("INFO - Reading the parameters file. ")
     with open("../data/parameters.yaml") as f:
@@ -171,7 +177,7 @@ if __name__ == "__main__":
          
     covid = States(pbeta, pr, par["tau"], par["sigma"], par["alpha"], 
                    prho, par["delta"], par["epsilon"], par["gamma1"], par["gamma2"], par["mu"], 
-                   initial, float(hmax))
+                   initial, par["p"], float(hmax))
 
     print("INFO - Calculating the States")
     Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T, info  = covid.state_model3(Tf)

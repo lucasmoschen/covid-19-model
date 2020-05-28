@@ -1,27 +1,23 @@
 parameters:
-    p: 0.8
+    p: 0.7 
     tau: 0.3125 # latent period duration: theta^{-1} = 5.2 (WHO)
     sigma: 0.5 # = 1/2 # from infectious onset to symptom onset: sigma^{-1} approx 2 days
-    alpha: 0.4 # In Ferguson's 95% CI
+    alpha: 0.9 # Brazil's under-report # 0.4 In Ferguson's 95% CI
     delta: 1
     epsilon: 0 
     gamma1: 0.125 # 1/8 => 10 days to recover
     gamma2: 0.0625 # 1/16 => 18 days to recover
-    mu:  0.00242857142  # 0.034/14.  # 0.00415428571 # = US: 0.058/14 #
+    mu:  0.004761904762  # Brazil's mortality rate #0.00242857142  # 0.034/14.  # 0.00415428571 # = US: 0.058/14 #
 initial:
-    Ef_0: 0.0000002 # E_f(0) + E_r(0) = 1e-6
-    Er_0: 0.0000008
-    If_0: 0
-    Ir_0: 0
-    Af_0: 0
-    Ar_0: 0
+    E_0: 0.000001
+    I_0: 0
+    A_0: 0
+    S_0: 0.999999
     Q_0: 0
-    Sf_0: 0.1999998
-    Sr_0: 0.7999992
     R_0: 0
     D_0: 0
     T_0: 0
-Tf: 1500
+Tf: 500
 hmax: 0.1 #if hmax == 0, the algorithm chooses it. 
 image_name: "scenario_1.svg"
     

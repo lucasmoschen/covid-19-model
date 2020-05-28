@@ -99,14 +99,19 @@ class Dynamics:
         decrease = 0
         return increase - decrease      
         
-def pbeta(t):
-    return 0.7676
+class Parameters_Functions:
+
+    def __init__(self): 
+        pass 
+        
+    def pbeta(self,t):
+        return 0.9
 
 
-def pr(t):
-    if t<50: return 1
-    else: return 0.2
-    
+    def pr(self,t):
+        if t<15: return 1
+        else: return 0.08
+        
 
-def prho(t):
-    return 0.1
+    def prho(self,t):
+        return 0
