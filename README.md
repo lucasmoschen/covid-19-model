@@ -42,7 +42,7 @@ Aronna, R. Guglielmi and L. M. Moschen.
 
 ### System of equations 
 
-![Image from the system](images/equation.svg)
+![Image from the system](images/equation.png)
 
 ## The Repository Structure
 
