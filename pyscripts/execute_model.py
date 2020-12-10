@@ -1,64 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # COVID-19 Model 
-
-# It's assumed the people are indicated to do a quarantine, reducing their contact to $100r$ of their usual contacts.
-
-# Consider some parameters: 
-
-# | Parameter | Explanation |
-# |-----| ----------------------------------------|
-# | $p$ | fraction of population in $r$-isolation |
-# | $\tau$ | inverse of the latent time |
-# | $\sigma$ | inverse of time before clear symptoms such to ensure isolation or testing of the subject |
-# | $\theta$ | $\tau + \sigma$ inverse of mean incubation time | 
-# | $\alpha$ | asymptomatic rate |
-# | $\delta$ | probability of positive test in compartment $E$ |
-# | $\gamma_1$ | recovery rate for asymptomatic or mild symptoms|
-# | $\gamma_2$ | recovery rate for $Q$ |
-# | $\mu$ | mortality rate of infected symptomatic |
-# | $\beta(t)$ |contact rate among people free to move |
-# | $\rho(t)$ | proportion of tests done in no infected with severe symptoms |
-# | $r(t)$ | reduction coefficient of contact rate |
-
-# ## SEIR with Q model
-
-# Consider the state $X = (E_f, E_r, I_f, I_r, A_f, A_r, Q, S_f, S_r, R, D)$, where
-
-# | State | Explanation |
-# | ----- | ---------------------------------------------------- |
-# | $E_f$ | exposed, not in isolation, not contagious |
-# | $E_r$ | exposed, in volunteer $r$-isolation, not contagious |
-# | $I_f$ | asymptomatic infected, not in isolation | 
-# | $I_r$ | asymptpmatic infected, in volunteer $r$-isolation |
-# | $A_f$ | Asymptomatic and contagious, not in isolation |
-# | $A_r$ | Asymptomatic and contagious, r-isolation |
-# | $Q$ | infected and tested positive, in enforced quarantine | 
-# | $S_f$ | susceptible not in isolation |
-# | $S_q$ | susceptible in volunteer $r$-isolation |
-# | $R$ | recovered and immune |
-# | $D$ | deaths |
-
-# The dynamics is described as follows:
-
-# $$
-#     \begin{array}{l}
-#     \dot{E}_f = \beta(t) S_f [I_f + A_f + r(t)(I_r + A_r) + \epsilon Q] - \rho(t)\delta E_f - \tau E_f \\[0.5ex]
-#     \dot{E}_r = r(t) \beta(t) S_r [I_f + A_f + r(t)(I_r + A_r) + \epsilon Q] - \rho(t)\delta E_r - \tau E_r \\[0.5ex]
-#     \dot{I}_f = \tau E_f - \sigma I_f - \rho(t)I_f \\[0.5ex]
-#     \dot{I}_r = \tau E_r - \sigma I_r - \rho(t)I_r  \\[0.5ex]
-#     \dot{A}_f = \sigma\alpha I_f - \rho(t)A_f - \gamma_1 A_f \\[0.5ex]
-#     \dot{A}_r = \sigma\alpha I_r - \rho(t)A_r - \gamma_1 A_r \\[0.5ex]
-#     \dot{Q} = \sigma (1-\alpha) [I_f + I_r] + \rho(t)(\delta(E_f + E_r) + I_f + I_r + A_f + A_r) - \gamma_2 Q - \mu Q \\[0.5ex]
-#     \dot{S}_f = -\beta(t)S_f [I_f + A_f + r(t)(I_r + A_r) + \epsilon Q] \\[0.5ex]
-#     \dot{S}_r = -r(t)\beta(t)S_r [I_f + A_f + r(t)(I_r + A_r) + \epsilon Q] \\[0.5ex]
-#     \dot{R} = \gamma_1 (A_f + A_r) + \gamma_2 Q \\[0.5ex]
-#     \dot{D} = \mu Q
-#     \end{array}
-# $$
-# #### Importing modules
-
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr
 import numpy as np
@@ -71,7 +13,6 @@ import sys
 
 #from dynamics_model import pbeta, pr, prho
 from dynamics_model import Dynamics, Parameters_Functions
-from calc_r0 import calc_R0
 
 class States(Dynamics): 
     
@@ -79,44 +20,37 @@ class States(Dynamics):
                  initial,p,hmax):
 
         """The init function orhganize the parameters. """
-        self.beta = beta 
-        self.r = r
-        self.tau = tau
-        self.sigma = sigma
-        self.alpha = alpha 
-        self.rho = rho
-        self.delta = delta 
-        self.eps = epsilon
-        self.gamma1 = gamma1
-        self.gamma2 = gamma2
-        self.mu = mu
+        super().__init__(beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu)
         
         """ Initial Conditions"""
-        self.y0 = [initial['E_0']*(1 - p), initial['E_0']*p, initial['I_0']*(1- p), initial['I_0']*p, 
+        self.y0 = [initial['E_0']*(1 - p), initial['E_0']*p, initial['I_0']*(1 - p), initial['I_0']*p, 
                    initial['A_0']*(1 - p), initial['A_0']*p, initial['Q_0'], 
                    initial['S_0']*(1 - p), initial['S_0']*p, initial['R_0'], initial['D_0'], initial['T_0']]
                    
         self.hmax = hmax
 
-    def state_model3(self, T):
+    def state_model(self, t0, tn):
         
-        def dynamics(states, t): 
-            
-            fun = [Dynamics.diffEf(self,t,states), Dynamics.diffEr(self,t,states), Dynamics.diffIf(self,t,states), Dynamics.diffIr(self,t,states), 
-                   Dynamics.diffAf(self,t,states), Dynamics.diffAr(self,t,states), Dynamics.diffQ(self,t,states), Dynamics.diffSf(self,t,states), 
-                   Dynamics.diffSr(self,t,states), Dynamics.diffR(self,t,states), Dynamics.diffD(self,t,states), Dynamics.diffT(self,t,states)]
-          
-            return fun
+        dynamics = lambda states, t: Dynamics.derivatives(self, t, states) 
     
-        print("INFO - Calling the Integration method method")
-        odesolver = odeint(func = dynamics, y0 = self.y0, t = np.linspace(0,T,T+1), 
+        print("INFO - Calling the Integration method.")
+        odesolver = odeint(func = dynamics, y0 = self.y0, t = np.linspace(t0,tn,tn-t0+1), 
                            hmax = self.hmax, full_output = 1)
         
         odesolver_var = odesolver[0].transpose()
         odesolver_info = odesolver[1]
+
+        return odesolver_var, odesolver_info 
+
+    def redistribute(self, y0): 
+        """Redistribute the initial values."""
+        S0 = (y0[7] + y0[8])
+        E0 = (y0[0] + y0[1])
+        A0 = (y0[4] + y0[5])
+        I0 = (y0[2] + y0[3])
         
-        Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T = odesolver_var
-        return Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T, odesolver_info 
+        return {'S_0': S0, 'E_0': E0, 'I_0': I0, 'A_0': A0, 'Q_0': y0[6], 
+                'R_0': y0[9], 'D_0': y0[10], 'T_0': y0[11]}
     
 def plotting(t,x, name):
     """ x is a dictionary with the name and a list with lists of the informations to plot"""
@@ -128,12 +62,7 @@ def plotting(t,x, name):
         plt.title(list(x.keys())[i])
     plt.savefig("../images/" + name)
 
-if __name__ == "__main__":
-
-    functions = Parameters_Functions()
-    pbeta = functions.pbeta
-    prho = functions.prho
-    pr = functions.pr
+def main(functions, file_name = False, info = False):
 
     print("INFO - Reading the parameters file. ")
     with open("../data/parameters.yaml") as f:
@@ -141,57 +70,62 @@ if __name__ == "__main__":
         par = data["parameters"]
         initial = data["initial"]
         Tf = data["Tf"]
+        change_p = data['change_p']
         Image_Name = data["image_name"]
         hmax = data["hmax"]
 
+    pbeta = functions.pbeta
+    prho = functions.prho
+    pr = functions.pr
+
+    t_list = np.linspace(0,Tf,Tf + 1)
+
     ## Calculating $R_0$
     
-    def R0Calc(model, t_list):
+    def R0Calc(t0, tn, p):
 
-        if os.path.exists("../data/r0.txt"):
-            print("INFO - Reading the file with R0 already calculated")
-            with open("../data/r0.txt", 'r') as f:
-                line = f.readline()
-                line = f.readline()
-                
-                t, p, tau, sigma, alpha, delta, epsilon, gamma1, gamma2, mu = sp.symbols("t p tau sigma alpha delta epsilon gamma1 gamma2 mu")
-                beta, r, rho = sp.Function("beta"), sp.Function("r"), sp.Function("rho")
-                
-                param_r0 = par.copy()
-                param_r0.update(zip(param_r0.keys(), [p, tau, sigma, alpha, delta, epsilon, gamma1, gamma2, mu]))
-                param_r0['beta'] = beta
-                param_r0['r'] = r
-                param_r0['rho'] = rho
-
-                R0 = parse_expr(line, local_dict = param_r0)
-                r0_numerical = R0.subs(par)
-                r0_list = [r0_numerical.subs({rho(t): prho(i), beta(t): pbeta(i), r(t): pr(i)}) for i in t_list]
-            
-        else: 
-            print("No file R0. Treating it 0.")
-            r0_list = np.zeros(len(t_list))
+        r0_list = np.zeros(tn - t0 + 1)
+        for t in range(t0, tn + 1):  
+            # calculates de varphi quantity 
+            varphi = pbeta(t)*par['tau']*(1 - (1 - pr(t)**2)*p)/((prho(t)*par['delta'] + par['tau'])*(par['sigma'] + prho(t)))
+            r0 = 1/2*(varphi + np.sqrt(varphi**2 + (4*par['sigma']*par['alpha']/(prho(t) + par['gamma1']))*varphi))
+            r0_list[t-t0] = r0
 
         return r0_list
 
-    t_list = np.linspace(0,Tf,Tf + 1)
-         
-    covid = States(pbeta, pr, par["tau"], par["sigma"], par["alpha"], 
-                   prho, par["delta"], par["epsilon"], par["gamma1"], par["gamma2"], par["mu"], 
-                   initial, par["p"], float(hmax))
 
-    print("INFO - Calculating the States")
-    Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T, info  = covid.state_model3(Tf)
-    r0_list = R0Calc(3, t_list)
+    states = np.array([[] for i in range(12)])
+    r0_list = []
+    tn = -1
+    for p in par['p']: 
+        t0, tn = tn + 1, change_p
+        covid = States(pbeta, pr, par["tau"], par["sigma"], par["alpha"], 
+                    prho, par["delta"], par["epsilon"], par["gamma1"], par["gamma2"], par["mu"], 
+                    initial, float(p), float(hmax))
+
+        print("INFO - Calculating the States")
+        odesolver, info  = covid.state_model(t0, tn)
+        r0 = R0Calc(t0, tn, float(p))
+        r0_list.extend(r0)
+        
+        states = np.hstack([states, odesolver])
+        initial = covid.redistribute(states[:,-1])
+
+        change_p = Tf
+
+    Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T = states
+
     variables = dict(zip(["t","Ef","Er","If","Ir","Af", "Ar", "Q","Sf","Sr","R","D","T", "R0"],
-            [t_list,Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T, r0_list]))        
+                         [t_list,Ef, Er, If, Ir, Af, Ar, Q, Sf, Sr, R, D, T, r0_list]))        
 
-    print("INFO - Saving the States variables. Please, input a name for the file name:")
-    name = input()
+    if not file_name: 
+        print("INFO - Saving the States variables. Please, input a name for the file name:")
+        file_name = input()
 
     if not os.path.exists("../data/variables"):
         os.mkdir("../data/variables")
 
-    with open("../data/variables/"+name+".txt", "w") as f:
+    with open("../data/variables/"+file_name+".txt", "w") as f:
         for i in variables.keys():
             f.write(i)
             for j in variables[i]:
@@ -200,22 +134,25 @@ if __name__ == "__main__":
             f.write("\n")
                 
     variables.pop("t")
+    
+    if not info: 
+        print("INFO - Information about the integration")
+        while True:
+            print("QUESTION - Do you wanna print the integration information? (y/n)")
+            yn = input()
+            if yn == "y":
+                print("INFO - Printing")
+                yn = True
+            elif yn == "n":
+                print("INFO - Not printing")
+                yn = False
+            break
 
-    print("INFO - Information about the integration")
-    while True:
-        print("QUESTION - Do you wanna print the integration information? (y/n)")
-        yn = input()
-        if yn == "y":
-            print("INFO - Printing")
-            yn = True
-        elif yn == "n":
-            print("INFO - Not printing")
-            yn = False
-        break
-
-    if yn: 
-        print(info)
+        if yn: 
+            print(info)
    
     plotting(t_list, variables, Image_Name)
-    
-    plt.show()
+
+if __name__ == "__main__":
+
+    main(Parameters_Functions())

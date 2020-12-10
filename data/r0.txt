@@ -1,2 +1,6 @@
 R0 
-1/2*(beta(t)*gamma1*p*r(t)**2*tau + beta(t)*p*r(t)**2*rho(t)*tau - beta(t)*gamma1*p*tau - beta(t)*p*rho(t)*tau + beta(t)*gamma1*tau + beta(t)*rho(t)*tau + sqrt((4*alpha*delta*rho(t)**2*sigma + 4*alpha*delta*rho(t)*sigma**2 + (beta(t)*gamma1*p*r(t)**2 - beta(t)*gamma1*p + 4*alpha*rho(t)*sigma + 4*alpha*sigma**2 + beta(t)*gamma1 + (beta(t)*p*r(t)**2 - beta(t)*p + beta(t))*rho(t))*tau)*(p*r(t)**2 - p + 1)*beta(t)*(gamma1 + rho(t))*tau))/((delta*rho(t) + tau)*(gamma1 + rho(t))*(rho(t) + sigma))
+beta(t)*tau*(1 - (1 - r(t)**2)*p)/((rho(t)*delta + tau)*(sigma + rho(t)))
+1/2*(varphi + sqrt(varphi**2 + (4*sigma*alpha/(rho(t) + gamma1))*varphi))
+Rt
+beta(t)*tau*(Sf + r(t)**2*Sr)/((rho(t)*delta + tau)*(sigma + rho(t)))
+1/2*(varphi + sqrt(varphi**2 + (4*sigma*alpha/(rho(t) + gamma1))*varphi))

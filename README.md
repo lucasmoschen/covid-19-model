@@ -1,53 +1,9 @@
 # Covid-19 Model 
 
 In this repository, you'll find the codes used to simulate the COVID-19 model in "A model for COVID-19 with
-isolation, quarantine and testing as control measures" [https://arxiv.org/abs/2005.07661](https://arxiv.org/abs/2005.07661), by M. S. Aronna, R. Guglielmi and L. M. Moschen. The repository is organized in this way:
-
-```bash
-├── data
-│   ├── parameters.yaml
-│   ├── r0.txt
-│   └── variables
-├── images
-│   ├── demo2.svg
-│   ├── demo3.svg
-│   ├── demo4.svg
-│   ├── demo.svg
-│   ├── demo_T.svg
-│   ├── demo_us.svg
-│   ├── equation.svg
-│   └── model.svg
-├── notebooks
-│   ├── __init__.py
-│   ├── paths.py
-│   └── R0Calculation.ipynb
-├── pyscripts
-│   ├── calc_r0.py
-│   ├── dynamics_model.py
-│   ├── execute_model.py
-│   └── __init__.py
-├── README.md
-└── requirements.txt
-```
-
-You can see the dynamics of the model in "dynamics_model.py". Actually you
-can execute the simulation with these steps below:
-
-## Using the execute file 
-
-To test the model, follow the steps.
-
-1. Install Python 3 in your machine.
-2. Install the requirements with "pip install -r requirements.txt".
-3. Go to the folder "pyscripts".
-4. Enter "python exposed_model.py".
-5. Change the parameters in data/parameters.yaml.
-6. Change the functions beta, r and rho in dynamics file. 
-7. Enter 4. command again. 
-
-Ps.: You will save the variables values in data/variables folder, with a name
-of your choice. You don't need to put the format, because it's assumed to be
-txt. 
+isolation, quarantine and testing as control measures"
+[https://arxiv.org/abs/2005.07661](https://arxiv.org/abs/2005.07661), by M. S.
+Aronna, R. Guglielmi and L. M. Moschen.
 
 ## The Model 
 
@@ -80,13 +36,73 @@ txt.
  should  be  recommended  to  maintain  a  lowcontact rate during the course
  of the epidemic. 
 
- ### The graphic from model 
+### The graphic from model 
 
 ![Image from the model](images/model.svg)
 
 ### System of equations 
 
 ![Image from the system](images/equation.svg)
+
+## The Repository Structure
+
+This repository is organized as follows: 
+
+```bash
+├── data
+│   ├── parameters.yaml
+│   ├── r0.txt
+│   ├── table_values.txt
+│   └── variables
+├── images
+├── notebooks
+├── pyscripts
+│   ├── dynamics_model.py
+│   ├── execute_model.py
+│   ├── __init__.py
+│   └── scenarios.py
+├── README.md
+└── requirements.txt
+```
+
+The data folder contains the files needed to organize the experiments: the
+parameters used, the r0 retrivied from the article and the table values from
+the scenarios described in the section 4 of the article. For each experiment,
+one can save the result in the variables folder (it is done automatically). 
+
+The pyscripts folder has the three main files: the ```dynamics_model.py```
+file contains the dynamics of the model described as Python functions. The
+```execute_model.py``` is how one can experiment the model with different
+parameters and ```scenarios.py``` is a file to reproduce the results found in
+the paper. 
+
+We expect it is the most reproducible that it can be. In order to experiment,
+you need: 
+
+- Have Python 3 installed. You can check this
+  [here](https://www.python.org/downloads/). 
+- Clone this repository in you machine with the command ```git clone https://github.com/lucasmoschen/covid-19-model``` 
+- Install the requirements with ```pip install -r requirements.txt```
+
+## Experimenting 
+
+After the steps above, so as to experiment the model, it's needed to follow
+these steps: 
+
+1. Change the parameters in the `parameters.yaml`. Maintain the format of the
+   file as already is. 
+2. Change the variable functions in the class `Parameters_Functions` in
+   `dynamics_model.py` file. 
+3. Enter in the `pyscripts` folder and run `python execute_model.py`. Follow
+   the instructions to save the variables in the terminal. 
+
+If you want to reproduce the results in the article or change the values and
+see how it affects each scenario, it's necessary to follow these steps: 
+
+1. Access the `scenarios.py` file and change the parameters values in your
+   way. 
+2. Enter in the `pyscripts` folder and run `python scenarios.py`. The result
+   will be in `data/table_values.txt`. 
 
 ### Sugestions
 
