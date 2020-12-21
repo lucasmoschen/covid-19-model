@@ -11,29 +11,29 @@ Aronna, R. Guglielmi and L. M. Moschen.
 
  In this article we propose a compartmental model for the dynamics of
  Coronavirus Disease 2019(COVID-19).  We take into account the presence of
- asymptomatic infections and the main policiesthat  have  been  adopted  so
+ asymptomatic infections and the main policies that  have  been  adopted  so
  far  for  the  combat  of  this  disease:  isolation  (or  social
  distancing)  ofa portion of the population,  quarantine for confirmed cases
- and testing.  We model isolation byseparating the population in two groups:
- one composed by key-workers that keep working duringthe  pandemic  and  have
+ and testing.  We model isolation by separating the population in two groups:
+ one composed by key-workers that keep working during the  pandemic  and  have
  a  usual  contact  rate,  and  a  second  group  consisting  of  people  that
- areenforced/recommended to stay at home.  We refer to quarantine as strict
- isolation, and it is appliedto confirmed infected cases.
+ are enforced/recommended to stay at home.  We refer to quarantine as strict
+ isolation, and it is applied to confirmed infected cases.
  
  In the proposed model, the proportion of people in isolation, the level of
- contact reduction andthe testing rate are control parameters that can vary in
+ contact reduction and the testing rate are control parameters that can vary in
  time, representing policies that evolve indifferent stages.  We obtain an
- explicit expression for the basic reproduction numberR0in terms ofthe
+ explicit expression for the basic reproduction numberR0in terms of the
  parameters of the disease and of the control policies.  In this way we can
- quantify the effect thatisolation and testing have in the evolution of the
- epidemic.  We present a series of simulations toillustrate different
+ quantify the effect that isolation and testing have in the evolution of the
+ epidemic.  We present a series of simulations to illustrate different
  realistic scenarios.  From the expression ofR0and the simulations we
- concludethat isolation (social distancing) and testing among asymptomatic
- cases are fundamental actions tocontrol the epidemic, and the stricter these
- measures are and the sooner they are implemented, themore lives can be saved.
+ conclude that isolation (social distancing) and testing among asymptomatic
+ cases are fundamental actions to control the epidemic, and the stricter these
+ measures are and the sooner they are implemented, the more lives can be saved.
  Additionally, we show that people that remain in isolation
- significantlyreduce  their  probability  of  contagion,  so  risk  groups
- should  be  recommended  to  maintain  a  lowcontact rate during the course
+ significantly reduce  their  probability  of  contagion,  so  risk  groups
+ should  be  recommended  to  maintain  a  low contact rate during the course
  of the epidemic. 
 
 ### The graphic from model 
@@ -66,11 +66,11 @@ This repository is organized as follows:
 ```
 
 The data folder contains the files needed to organize the experiments: the
-parameters used, the r0 retrivied from the article and the table values from
+parameters used, the r0 retrieved from the article and the table values from
 the scenarios described in the section 4 of the article. For each experiment,
 one can save the result in the variables folder (it is done automatically). 
 
-The pyscripts folder has the three main files: the ```dynamics_model.py```
+The `pyscripts` folder has the three main files: the ```dynamics_model.py```
 file contains the dynamics of the model described as Python functions. The
 ```execute_model.py``` is how one can experiment the model with different
 parameters and ```scenarios.py``` is a file to reproduce the results found in
@@ -90,7 +90,8 @@ After the steps above, so as to experiment the model, it's needed to follow
 these steps: 
 
 1. Change the parameters in the `parameters.yaml`. Maintain the format of the
-   file as already is. 
+   file as already is. The `change_p` parameter is reserved to the date when
+   $p$ change. It can be one, for now. 
 2. Change the variable functions in the class `Parameters_Functions` in
    `dynamics_model.py` file. 
 3. Enter in the `pyscripts` folder and run `python execute_model.py`. Follow
@@ -104,7 +105,7 @@ see how it affects each scenario, it's necessary to follow these steps:
 2. Enter in the `pyscripts` folder and run `python scenarios.py`. The result
    will be in `data/table_values.txt`. 
 
-### Sugestions
+### Suggestions
 
-Please, any sugestions make an issue and I will answer as quick as I can. Thanks!
+Please, any suggestions make an issue and I will answer as quick as I can. Thanks!
 
