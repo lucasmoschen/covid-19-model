@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint 
 
+from __init__ import ROOT_DIR
 import yaml
 import os
 import sys
@@ -60,12 +61,14 @@ def plotting(t,x, name):
         plt.plot(t, x[list(x.keys())[i]])
         plt.ticklabel_format(useOffset=False)
         plt.title(list(x.keys())[i])
-    plt.savefig("../images/" + name)
+    file_path = os.path.join(ROOT_DIR, "../images/" + name)
+    plt.savefig(file_path)
 
 def main(functions, file_name = False, info = False):
 
     print("INFO - Reading the parameters file. ")
-    with open("../data/parameters.yaml") as f:
+    file_path = os.path.join(ROOT_DIR, "../data/parameters.yaml")
+    with open(file_path) as f:
         data = yaml.load(f, Loader = yaml.FullLoader)
         par = data["parameters"]
         initial = data["initial"]
@@ -122,10 +125,12 @@ def main(functions, file_name = False, info = False):
         print("INFO - Saving the States variables. Please, input a name for the file name:")
         file_name = input()
 
-    if not os.path.exists("../data/variables"):
-        os.mkdir("../data/variables")
+    file_path = os.path.join(ROOT_DIR, "../data/variables")
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
 
-    with open("../data/variables/"+file_name+".txt", "w") as f:
+    file_path = os.path.join(ROOT_DIR, "../data/variables/"+file_name+".txt")
+    with open(file_path, "w") as f:
         for i in variables.keys():
             f.write(i)
             for j in variables[i]:

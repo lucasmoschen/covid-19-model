@@ -6,6 +6,9 @@ import yaml
 import numpy as np 
 from tabulate import tabulate
 
+from __init__ import ROOT_DIR
+import os
+
 class Parameters_Functions:
 
     def __init__(self, values, days_change):
@@ -54,12 +57,14 @@ def change_values(parameters: dict, tau, sigma, alpha, delta, epsilon, gamma1, g
     return parameters
 
 def writing(parameters): 
-    with open('../data/parameters.yaml', 'w') as f: 
+    file_path = os.path.join(ROOT_DIR, '../data/parameters.yaml')
+    with open(file_path, 'w') as f: 
         yaml.dump(parameters, f) 
 
 def calculates_statistics(file_name):
 
-    with open('../data/variables/'+file_name, 'r') as f: 
+    file_path = os.path.join(ROOT_DIR, '../data/variables/'+file_name)
+    with open(file_path, 'r') as f: 
         important_values = {}
         line = f.readline()
         while line != '': 
@@ -84,7 +89,8 @@ def calculates_statistics(file_name):
                     important_values['R0'] = [value[0], value[-1]]
             line = f.readline()
 
-    with open('../data/table_values.txt', 'a') as f: 
+    file_path = os.path.join(ROOT_DIR, '../data/table_values.txt')
+    with open(file_path, 'a') as f: 
         f.write(file_name)
         f.write('\n')
         f.write(tabulate(important_values.items()))
@@ -94,10 +100,12 @@ def calculates_statistics(file_name):
 
 if __name__ == '__main__': 
 
-    with open('../data/table_values.txt', 'w') as f:
+    file_path = os.path.join(ROOT_DIR, '../data/table_values.txt')
+    with open(file_path, 'w') as f:
         pass
 
-    with open('../data/parameters.yaml', 'r') as f: 
+    file_path = os.path.join(ROOT_DIR, '../data/parameters.yaml')
+    with open(file_path, 'r') as f: 
         parameters = yaml.load(f, Loader=yaml.FullLoader)
     
     parameters['initial']['E_0'] = 0.000001

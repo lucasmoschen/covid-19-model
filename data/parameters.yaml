@@ -1,8 +1,8 @@
-Tf: 500
-change_p: 50
-hmax: 0.1
-image_name: scenario_E4_new.svg
-initial:
+Tf: 500                         # days until the end of the simulation  
+change_p: 50                    # when p changes its value
+hmax: 0.1                       # max_step in the numerical integration 
+image_name: scenario1_web.svg   # name of the image
+initial:                        # initial values(sum 1)
   A_0: 0
   D_0: 0
   E_0: 1.0e-06
@@ -11,15 +11,15 @@ initial:
   R_0: 0
   S_0: 0.999999
   T_0: 0
-parameters:
-  alpha: 0.4
-  delta: 0.5
-  epsilon: 0
+parameters:      
+  alpha: 0.91                                
+  delta: 0.8
+  epsilon: 0                   
   gamma1: 0.125
   gamma2: 0.0625
-  mu: 0.002428571428571429
+  mu: 0.00414285714
   p:
   - 0
-  - 0.8
+  - 0.9
   sigma: 0.5
   tau: 0.3125

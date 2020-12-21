@@ -3,7 +3,7 @@ class Dynamics:
     ''' This class is used to describe the dynamics of the exposed model. '''
     
     def __init__(self, beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu): 
-        """The init function orhganize the parameters. """        
+        """The init function organize the parameters. """        
         self.beta = beta #function
         self.r = r       #function
         self.tau = tau
@@ -54,12 +54,12 @@ class Parameters_Functions:
         pass 
         
     def pbeta(self,t):
-        return 0.7676
+        return 1.0
 
     def pr(self,t):
-        if t<21: return 1
+        if t<=31: return 1
         else: return 0.2
         
     def prho(self,t):
-        return 0.02
+        return 0.0001
 
