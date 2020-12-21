@@ -61,5 +61,5 @@ class Parameters_Functions:
         else: return 0.2
         
     def prho(self,t):
-        return 0.0001
+        return 0.1
 
