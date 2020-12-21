@@ -20,7 +20,7 @@ class States(Dynamics):
     def __init__(self, beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu, 
                  initial,p,hmax):
 
-        """The init function orhganize the parameters. """
+        """The init function organize the parameters. """
         super().__init__(beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu)
         
         """ Initial Conditions"""
@@ -54,7 +54,8 @@ class States(Dynamics):
                 'R_0': y0[9], 'D_0': y0[10], 'T_0': y0[11]}
     
 def plotting(t,x, name):
-    """ x is a dictionary with the name and a list with lists of the informations to plot"""
+    """ x is a dictionary with the name and a list with lists of the
+    information to plot"""
     plt.figure(figsize=(80,100))
     for i in range(len(x.keys())):
         plt.subplot(int(len(x.keys())/3) + 1,3,i+1)
