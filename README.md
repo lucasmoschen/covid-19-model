@@ -2,7 +2,7 @@
 
 In this repository, you'll find the codes used to simulate the COVID-19 model in "A model for COVID-19 with
 isolation, quarantine and testing as control measures"
-[https://arxiv.org/abs/2005.07661](https://arxiv.org/abs/2005.07661), by M. S.
+[https://doi.org/10.1016/j.epidem.2021.100437](https://doi.org/10.1016/j.epidem.2021.100437), by M. S.
 Aronna, R. Guglielmi and L. M. Moschen.
 
 ## The Model 
@@ -16,7 +16,7 @@ Aronna, R. Guglielmi and L. M. Moschen.
  distancing)  ofa portion of the population,  quarantine for confirmed cases
  and testing.  We model isolation by separating the population in two groups:
  one composed by key-workers that keep working during the  pandemic  and  have
- a  usual  contact  rate,  and  a  second  group  consisting  of  people  that
+ a  usual  contact  rate,  and  a  secondhttps://arxiv.org/abs/2005.07661  group  consisting  of  people  that
  are enforced/recommended to stay at home.  We refer to quarantine as strict
  isolation, and it is applied to confirmed infected cases.
  
