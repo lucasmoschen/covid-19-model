@@ -18,7 +18,7 @@ the city of Rio de Janeiro.
  distancing)  ofa portion of the population,  quarantine for confirmed cases
  and testing.  We model isolation by separating the population in two groups:
  one composed by key-workers that keep working during the  pandemic  and  have
- a  usual  contact  rate,  and  a  second  group  consisting  of  people  that
+ a  usual  contact  rate,  and  a  secondhttps://arxiv.org/abs/2005.07661  group  consisting  of  people  that
  are enforced/recommended to stay at home.  We refer to quarantine as strict
  isolation, and it is applied to confirmed infected cases.
  
@@ -122,7 +122,26 @@ see how it affects each scenario, it's necessary to follow these steps:
 1. Access the `scenarios.py` file and change the parameters values in your
    way. 
 2. Enter in the `pyscripts` folder and run `python scenarios.py`. The result
-   will be in `data/table_values.txt`. 
+   will be in `data/table_values.## Experimenting 
+
+After the steps above, so as to experiment the model, it's needed to follow
+these steps: 
+
+1. Change the parameters in the `parameters.yaml`. Maintain the format of the
+   file as already is. The `change_p` parameter is reserved to the date when
+   $p$ change. It can be one, for now. 
+2. Change the variable functions in the class `Parameters_Functions` in
+   `dynamics_model.py` file. 
+3. Enter in the `pyscripts` folder and run `python execute_model.py`. Follow
+   the instructions to save the variables in the terminal. 
+
+If you want to reproduce the results in the article or change the values and
+see how it affects each scenario, it's necessary to follow these steps: 
+
+1. Access the `scenarios.py` file and change the parameters values in your
+   way. 
+2. Enter in the `pyscripts` folder and run `python scenarios.py`. The result
+   will be in `data/table_values.txt`. txt`. 
 
 ## Suggestions
 
