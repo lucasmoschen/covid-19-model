@@ -1,5 +1,10 @@
 *.svg
-
 data/variables
-
 pyscripts/__pycache__
+.ipynb_checkpoints/
+*.out
+*.aux
+*.log
+*.gz
+*.fls
+*.fdb_latexmk
