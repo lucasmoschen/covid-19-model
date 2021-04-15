@@ -1,0 +1,17 @@
+No final de dezembro de 2019, na cidade de Wuhan (Hubei, China), foram identificados diversos casos de pneumonia \cite{sars-cov-2} causados por um novo coronavírus. 
+Ele foi chamado de SARS-CoV-2 e a doença por ele provocada COVID-19, que se espalhou rapidamente pelo mundo. 
+A maioria dos casos resultam em quadros assintomáticos ou com sintomas leves, mas em casos mais severos, falta de ar e dor no peito são mais frequentes \cite{oms-symptoms} e podem levar à morte. 
+
+O Brasil declarou a doença como emergência de saúde pública em fevereiro de 2020 com o objetivo de proteger a população e aplicar medidas como isolamento social, quarentena e testagem \cite{croda2020}. 
+O primeiro caso foi registrado em São Paulo no final daquele mês. 
+No mês seguinte (março), o governador do estado do Rio de Janeiro declarou emergência na saúde pública e fechamento de ambientes que favorecem aglomerações, tais como universidades, escolas e teatros.
+Em seguida, diversas medidas foram tomadas como o controle de restaurantes, de praias, de shopping centers e do comércio não essencial \cite{dantas2020}. 
+Atualmente, em abril de 2021, o Brasil é um dos países com maior crescimento da epidemia, com mais de treze milhões de
+casos e 350 mil mortes. 
+
+Em \cite{aronna2021}, introduzimos um modelo compartimental tipo SEIAQR, que leva em conta isolamento, quarentena de casos confirmados e casos assintomáticos (mais detalhes na Seção \ref{apresentation}). 
+O presente trabalho procura utilizar o modelo mencionado para estimar a taxa de casos não reportados na cidade do Rio de Janeiro, dado que, como já expusemos anteriormente, a maior parte das infecções não resultam em sintomas graves e, portanto, existe uma dificuldade em entender a real extensão da evolução na população.
+Os valores reportados aqui não procuram ditar a verdadeira quantidade, mas sim, utilizar as ferramentas matemáticas para compreender a dinâmica, o que se torna mais complicado, uma vez que essa é uma doença recente e com informação sendo adquirida ao longo do processo.
+
+O texto se organiza na seguinte forma: na Seção \ref{apresentation} é apresentada uma simplificação do modelo que será utilizada na estimação; na Seção \ref{data} são apresentados os dados utilizados para o problema da cidade do Rio de Janeiro; na Seção \ref{parameters} são estimados os parâmetros e é utilizado um método para quantificar a incerteza. 
+Por fim, na última seção apresentamos a conclusão com algumas discussões e possíveis melhoras nos procedimentos adotados. Os códigos para os algoritmos e experimentações podem ser encontrados no Github \cite{github}. 

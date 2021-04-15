@@ -1,0 +1,50 @@
+WRITE "A FIVE STATE MODEL WITH QUARANTINE, TESTS AND ISOLATION"$
+
+% B_ IS THE VARIABLE VECTOR (INPUT, OUTPUT, STATE)
+
+B_:={y1,y2,z,E,I,A,S,R,T,D}$
+
+FOR EACH EL_ IN B_ DO DEPEND EL_,T$
+
+%B1_ IS THE UNKNOWN PARAMETER VECTOR
+
+B1_:={alpha, beta, mu}$
+
+%NUMBER OF STATES 
+NX_:=7$
+%NUMBER OF INPUTS 
+NU_:=0$
+%NUMBER OF OUTPUTS 
+NY_:=3$
+
+% rho = 1/5000
+% tau = 1/4
+% sigma = 1/2
+% gamma1 = 1/4
+% gamma2 = 1/10
+
+%WITH REAL VALUES INPUTED
+C_:={df(E,t)=beta*S*(I+A)-1/5000*E-1/4*E,
+     df(I,t)=1/4*E-1/2*I-1/5000*I, 
+     df(A,t)=1/2*alpha*I-1/5000*A-1/4*A,
+     df(S,t)=-beta*S*(I+A),
+     df(T,t)=1/2*(1-alpha)*I+1/5000*(E+I+A),
+     df(Q,t)=1/2*(1-alpha)*I+1/5000*(E+I+A) - 1/10*Q - mu*Q,
+     df(R,t)= 1/4*A + 1/10*Q,
+     df(D,t)=mu*Q,
+     y1=T, 
+     y2=D,
+     z=E+I+A+S+R+Q}$  
+
+FLAG_:=1$
+
+%FLAG_:= 0$
+%B2_ := {alpha=0.9, beta=0.2, mu=0.02}$
+
+DAISY()$
+
+%VALUES OF INITIAL CONDITIONS
+ICK_:={T=1/5000, D = 0}$
+ICUNK_:={E=I0/4,I=I0/2,Af=I0/4,Sf=1 - I0, R=0}$
+CONDINIZ()$
+END$

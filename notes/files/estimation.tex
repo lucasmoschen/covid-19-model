@@ -1,0 +1,106 @@
+A construção do método de estimação presente nesse trabalho foi baseada em \cite{cao2012, liang2010, ramsey2007}. 
+Como explicitado na Seção \ref{data}, os dados representam a informação diária do número de casos novos e de mortes a partir do começo de março, sendo que o primeiro dia desse mês tem muito mais casos do que o esperado e, portanto, foi excluído da análise. 
+Consideraremos o início do modelo sendo o dia 16, quando as primeiras medidas de contenção foram tomadas \cite{decreto-emergencia} e a evolução do vírus deixa de ser tão irregular.
+No modelo, essas curvas são acumuladas [Seção  \ref{apresentation}] e, portanto, observamos 
+\begin{align}
+    \hat{x}^{(1)}_i = (T(i) - T(i-1)) + \varepsilon^{(1)}_i, i = -14, ..., n
+    \label{obsT1}
+    \\
+    \hat{x}^{(2)}_i = (D(i) - D(i-1)) + \varepsilon^{(2)}_i, i = -14, ..., n
+    \label{obsD1}
+\end{align}
+em que $\hat{x}_0^{(1)}$ se refere ao aumento do número de casos notificados no dia 16 de março e $n$ é o número de dias considerados. 
+Assumimos que $\{\varepsilon^{(1)}_i\}_{-14 \le i \le n}$ e $\{\varepsilon^{(2)}_i\}_{-14 \le i \le n}$ são sequências de variáveis independentes e normalmente distribuídas com variâncias $\sigma_k^2, k = 1,2$ desconhecidas\footnote{A hipótese de normalidade tem a intuição de ser a soma de vários pequenos erros individuais independentes.}. 
+Para facilitar, vamos trabalhar com as observações 
+\begin{align}
+    y^{(1)}_i = T(i) + \xi^{(1)}_i, i = 0, ..., n
+    \label{obsT}
+    \\
+    y^{(2)}_i = D(i) + \xi^{(2)}_i, i = 0, ..., n
+    \label{obsD}
+\end{align}
+onde, para $k=1,2$, definimos $\xi_i^{(k)} = \sum_{j=-14}^i
+\varepsilon_j^{(k)}$. Se tormarmos $i \le j$, calculamos 
+\begin{equation} 
+    \label{cov-matrix}
+    Cov(\xi_i^{(k)}, \xi_j^{(k)}) = (i + 15)\sigma_k^2
+\end{equation}
+e o vetor $\boldsymbol{\xi^{(k)}}$ tem distribuição normal multivariada com média 0 e matriz de covariância dada pela equação \eqref{cov-matrix}. 
+Normalizarmos os dados obtidos pelo tamanho da população, que assumimos ser de 6.7 milhões \cite{ibge-rio} no Rio de Janeiro. 
+A estimação dos parâmetros foi dividida em (1) identificabilidade, (2) ajuste nos dados e (3) quantificação da incerteza.
+
+\subsection{Escolha e modelagem dos parâmetros}
+
+Afirmamos que os parâmetros $\tau, \sigma, \gamma_1, \gamma_2$ e $\delta$ são epidemiológicos e, portanto, utilizamos estimativas da literatura que podem ser encontradas na Tabela \ref{tab:parameter_values}. 
+O parâmetro de testagem $\rho$ é aproximado segundo a Observação \ref{estimativa-rho}. 
+Por fim, os parâmetros $\beta(t), \alpha$ e $\mu(t)$ são estimados, de forma que a transmissibilidade e mortalidade são modeladas conforme explicado na Seção \ref{estimativa-beta}. 
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+     {\bf Par.} & {\bf Valor} & {\bf Referência} \\[0.5ex]
+    \hline 
+    $\omega^{-1}$ &  5.74 dias & \cite{incubation2020} \\
+    \hline
+    $\tau^{-1}$ & 3.69 dias & \cite{latent2020} \\
+    \hline
+    $\sigma^{-1}$ &  $\omega^{-1} - \tau^{-1}$ & \cite{latent2020} \\
+    \hline
+    $\gamma_1^{-1}$  & 7.5 dias & \cite{recovery2020} \\
+    \hline
+    $\gamma_2^{-1}$ & 13.4 dias & \cite{recovery2020} \\
+    \hline
+    $\delta$ & 0.01 &  \cite{delta2020} \\
+    \hline
+    \end{tabular}
+    \caption{Valores dos parâmetros epidemiológicos estimados pela literatura.}
+    \label{tab:parameter_values}
+\end{table}
+
+\begin{obs.}[Estimativa parâmetro $\rho$]
+    \label{estimativa-rho}
+    Vamos considerar $\rho(t) \equiv \rho$ e utilizamos os dados de testagem do estado do Rio de Janeiro obtidos pelo IBGE através do PNAD COVID-19
+    \cite{ibge-pnad} como resumido na Tabela \ref{Tab:testing-rio}. 
+    Em particular, percebemos que 2\% da população é testada por mês, e entre os testados, 20\% eram positivos. 
+    Sabemos que parte dessa testagem ocorre em pessoas que foram identificadas pelo sistema com o aparecimento de sintomas e gostaríamos de separar entre esses e aqueles que não possuíam sintomas, o que infelizmente não é informado.
+    Então, por dia, a proporção de 0,00013 da população foi testada, isto é, $\rho \le 1.3\cdot 10^{-4}$. 
+    Tomaremos $\rho = 10^{-5}$ e uma análise da influência dessa escolha é
+    feita na Tabela \ref{tab:range-parameters}.
+
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|}
+        \hline
+          & {\bf Julho} & {\bf Agosto}  & {\bf Setembro} & {\bf Outubro} \\[0.5ex]
+        \hline
+        Percentual (\%) & 6,8 & 8,6 & 10,2 & 11,9 \\
+        \hline
+        Percentual que testaram positivo (\%) & 1,2 & 1,5 & 1,9 & 2,4 \\
+        \hline
+        \end{tabular}
+        \caption{Percentual de pessoas que fizeram
+        algum teste para saber se estavam infectadas pelo SARS-CoV-2 no total da
+        população. }
+        \label{Tab:testing-rio}
+    \end{table}
+\end{obs.}
+
+\subsubsection{Estimação dos parâmetros que variam com o tempo}
+\label{estimativa-beta}
+
+Na cidade, ao longo da epidemia, ocorreram diversas medidas de isolamento, como, por exemplo, a obrigatoriedade do uso de máscaras \cite{decreto-mascaras} e o sistema de bandeiras \cite{sistemas-bandeiras}.
+Por consequência, a taxa de transmissibilidade da doença, o parâmetro $\beta$ do modelo, varia conforme a aceitação dessas medidas pela sociedade.
+A modelagem em si da resposta da sociedade é bem complexa e não será estudada nesse texto.
+Então selecionamos o uso da aproximação por {\em B-splines}, que pode ser expressa da seguinte forma: 
+\begin{equation}
+    \label{beta-b-splines}
+    \beta(t) \approx \sum_{j=1}^s \beta_j B_{j,k}(t)
+\end{equation}
+onde $\beta_j$ são os coeficientes a ser estimados e $B_{j,k}(t)$ formam a base de funções de ordem $k$. 
+Além disso, foi observado que ao estimar o modelo em questão, apesar da curva de novos casos ter bons resultados, a curva de mortes teve um comportamento diferente: ela apresentou um pico bem mais concentrado e uma subida e descida muito mais intensas que as previstas. 
+Por esse motivo, tratamos $\mu = \mu(t)$ da mesma forma que $\beta$, mas com $r$ coeficientes. 
+
+Definimos, portanto, o vetor de parâmetros a ser estimado $\theta = (\alpha, \beta_1, ..., \beta_s, \mu_1, ..., \mu_r)$ com $s+r+1$ parâmetros. 
+Por hipótese assumiremos que os {\it knots}, pontos onde os polinômios se ligam, são igualmente espaçados. 
+Poderíamos procurar os pontos ótimos conforme os momentos da epidemia em que a resposta do público foi modificada segundo às ações tomadas pelo poder público.

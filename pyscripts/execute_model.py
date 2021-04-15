@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint 
 
-from __init__ import ROOT_DIR
 import yaml
 import os
 import sys
@@ -20,7 +19,7 @@ class States(Dynamics):
     def __init__(self, beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu, 
                  initial,p,hmax):
 
-        """The init function organize the parameters. """
+        """The init function orhganize the parameters. """
         super().__init__(beta, r, tau, sigma, alpha, rho, delta, epsilon, gamma1, gamma2, mu)
         
         """ Initial Conditions"""
@@ -54,22 +53,19 @@ class States(Dynamics):
                 'R_0': y0[9], 'D_0': y0[10], 'T_0': y0[11]}
     
 def plotting(t,x, name):
-    """ x is a dictionary with the name and a list with lists of the
-    information to plot"""
+    """ x is a dictionary with the name and a list with lists of the informations to plot"""
     plt.figure(figsize=(80,100))
     for i in range(len(x.keys())):
         plt.subplot(int(len(x.keys())/3) + 1,3,i+1)
         plt.plot(t, x[list(x.keys())[i]])
         plt.ticklabel_format(useOffset=False)
         plt.title(list(x.keys())[i])
-    file_path = os.path.join(ROOT_DIR, "../images/" + name)
-    plt.savefig(file_path)
+    plt.savefig("../images/" + name)
 
 def main(functions, file_name = False, info = False):
 
     print("INFO - Reading the parameters file. ")
-    file_path = os.path.join(ROOT_DIR, "../data/parameters.yaml")
-    with open(file_path) as f:
+    with open("../data/parameters.yaml") as f:
         data = yaml.load(f, Loader = yaml.FullLoader)
         par = data["parameters"]
         initial = data["initial"]
@@ -126,12 +122,10 @@ def main(functions, file_name = False, info = False):
         print("INFO - Saving the States variables. Please, input a name for the file name:")
         file_name = input()
 
-    file_path = os.path.join(ROOT_DIR, "../data/variables")
-    if not os.path.exists(file_path):
-        os.mkdir(file_path)
+    if not os.path.exists("../data/variables"):
+        os.mkdir("../data/variables")
 
-    file_path = os.path.join(ROOT_DIR, "../data/variables/"+file_name+".txt")
-    with open(file_path, "w") as f:
+    with open("../data/variables/"+file_name+".txt", "w") as f:
         for i in variables.keys():
             f.write(i)
             for j in variables[i]:

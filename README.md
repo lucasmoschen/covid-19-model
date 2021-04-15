@@ -1,9 +1,51 @@
 # Covid-19 Model 
 
-In this repository, you'll find the codes used to simulate the COVID-19 model in "A model for COVID-19 with
-isolation, quarantine and testing as control measures"
-[https://arxiv.org/abs/2005.07661](https://arxiv.org/abs/2005.07661), by M. S.
-Aronna, R. Guglielmi and L. M. Moschen.
+In this repository, one will find the codes used to simulate the COVID-19 model
+in "A model for COVID-19 with isolation, quarantine, and testing as control
+measures"
+([https://doi.org/10.1016/j.epidem.2021.100437](https://doi.org/10.1016/j.epidem.2021.100437)),
+written by M. S. Aronna, R. Guglielmi, and L. M. Moschen, and the codes used for the estimation of the underreporting rate of COVID-19 cases in
+the city of Rio de Janeiro. We organize it as follows: 
+
+## Structure 
+
+```{bash}
+├── data
+│   ├── covid_data_organized.csv
+│   ├── parameters.yaml
+├── experiments
+├── identifiability
+│   └── covid_model_id.txt
+├── images
+├── notebooks
+│   ├── bootstrap_results.ipynb
+│   ├── data_analysis.ipynb
+│   └── model_fitting.ipynb
+├── notes
+│   ├── underreporting_estimation.pdf
+├── pyscripts
+│   ├── bootstrap.py
+│   ├── dynamics_model.py
+│   ├── estimation.py
+│   ├── execute_model.py
+│   ├── initial_estimation.py
+│   └── scenarios.py
+└── README.md
+```
+
+This structure includes:
+
+* `data`: COVID-19 raw and organized data from Rio de Janeiro, parameters for simulations, and variables saved after the simulations; 
+* `experiments`: bootstrap and fitting;
+* `notebooks`: where we do the experiments. One should follow the order data analysis, model fitting, and bootstrap results;
+* `pyscripts`: scripts written in Python. The explanation for each one is below. 
+   1. `bootstrap.py`: parametric bootstrap used in the report;
+   2. `dynamics_model.py`: differential equations from the model;
+   3. `estimation.py`: estimates the overall confirmed case curve and death curve;
+   4. `execute_model.py`: after changing the parameters in `parameter.yaml`, run this code to simulate the model;
+   5. `initial_estimation.py`: estimates the initial curve of the confirmed cases;
+   6. `scenarios.py`: calculate the scenarios explained in the article and save them into the `table_values.txt` file. 
+
 
 ## The Model 
 
@@ -42,70 +84,15 @@ Aronna, R. Guglielmi and L. M. Moschen.
 
 ### System of equations 
 
-![Image from the system](images/equation.png)
+![Image from the system](images/equation.svg)
 
-## The Repository Structure
+### Report of Scientific Initiation 
 
-This repository is organized as follows: 
+In the folder `notes`, one can find the report of my scientific initiation
+(written in portuguese) with the following abstract:  
 
-```bash
-├── data
-│   ├── parameters.yaml
-│   ├── r0.txt
-│   ├── table_values.txt
-│   └── variables
-├── images
-├── notebooks
-├── pyscripts
-│   ├── dynamics_model.py
-│   ├── execute_model.py
-│   ├── __init__.py
-│   └── scenarios.py
-├── README.md
-└── requirements.txt
-```
+The COVID-19 disease caused by the SARS-CoV-2 virus has been spreading rapidly over the world since the beginning of 2020.  The understanding of its dynamics in the population is crucial to take measures that contain the spread. In this report, we consider the epidemiological model SEIAQR aforementioned to understand the beginning of the epidemic in the city of Rio de Janeiro and, in particular, the underreporting rate, that is, the proportion of infected individuals that the system didn't register. The curves of confirmed cases and deaths were adjusted to the actual city data using the error-weighted least squares method. We use B-splines to approximate the transmissibility and mortality of the disease. Also, we analyze the structural and practical identifiability of the model to verify the feasibility of the estimates. We used the Bootstrap method to quantify the uncertainty about the parameter's estimates. In the period March-July 2020, we obtain the point estimate of 0.9 for underreporting with a 95 \% confidence interval (0.85, 0.93). 
 
-The data folder contains the files needed to organize the experiments: the
-parameters used, the r0 retrieved from the article and the table values from
-the scenarios described in the section 4 of the article. For each experiment,
-one can save the result in the variables folder (it is done automatically). 
+## Suggestions
 
-The `pyscripts` folder has the three main files: the ```dynamics_model.py```
-file contains the dynamics of the model described as Python functions. The
-```execute_model.py``` is how one can experiment the model with different
-parameters and ```scenarios.py``` is a file to reproduce the results found in
-the paper. 
-
-We expect it is the most reproducible that it can be. In order to experiment,
-you need: 
-
-- Have Python 3 installed. You can check this
-  [here](https://www.python.org/downloads/). 
-- Clone this repository in you machine with the command ```git clone https://github.com/lucasmoschen/covid-19-model``` 
-- Install the requirements with ```pip install -r requirements.txt```
-
-## Experimenting 
-
-After the steps above, so as to experiment the model, it's needed to follow
-these steps: 
-
-1. Change the parameters in the `parameters.yaml`. Maintain the format of the
-   file as already is. The `change_p` parameter is reserved to the date when
-   $p$ change. It can be one, for now. 
-2. Change the variable functions in the class `Parameters_Functions` in
-   `dynamics_model.py` file. 
-3. Enter in the `pyscripts` folder and run `python execute_model.py`. Follow
-   the instructions to save the variables in the terminal. 
-
-If you want to reproduce the results in the article or change the values and
-see how it affects each scenario, it's necessary to follow these steps: 
-
-1. Access the `scenarios.py` file and change the parameters values in your
-   way. 
-2. Enter in the `pyscripts` folder and run `python scenarios.py`. The result
-   will be in `data/table_values.txt`. 
-
-### Suggestions
-
-Please, any suggestions make an issue and I will answer as quick as I can. Thanks!
-
+Please, for any suggestions, write an issue, and I will answer as quickly as I can. Thanks!

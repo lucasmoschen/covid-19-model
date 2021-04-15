@@ -1,0 +1,46 @@
+Nesse trabalho, utilizamos ferramentas matemáticas de equações diferenciais,
+estatística e otimização para estimar a taxa subnotificação de COVID-19 na
+cidade do Rio de Janeiro no início da pandemia. Obtivemos que a proporção
+$\alpha$ de indivíduos não identificados pelo sistema é em torno de 90\%, com
+intervalo de confiança entre 85\% e 92\%. Isso significa que a cada indivíduo
+notificado pelo sistema, em torno de 9 ou 10 não foram observados, por serem 
+assintomáticos, apresentarem sintomas leves ou não serem testados. Esse valor
+está de encontro com várias cidades do Brasil, de acordo com
+\cite{subnotificacao-folha-de-sao-paulo}. Em uma nota técnica de abril de 2020,
+\cite{subnotification-brazil} estimou a notificação de casos no Brasil entre
+7.8\% e 8.1\% e \cite{subnotification2-brazil}, também em abril de 2020, em
+7\%. No Rio de Janeiro, \cite{subnotification-rio} estimou a notificação em
+7.2\%. Esses resultados vão de encontro com o desse trabalho. 
+
+A análise de dados na Seção \ref{data} permitiu o melhor entendimento de
+problemas em relação ao tempo de notificação de um indivíduo infectado. Nesse
+sentido, além da falta de testagem, existem atrasos e erros em todas as etapas do
+processo que, sem o devido cuidado, podem gerar más inferências.
+Gráficos adicionais sobre as outras variáveis estão em formato {\it notebook}
+no Github \cite{github}. Obtivemos um ajuste interessante do modelo, com
+resíduos distribuídos normalmente, apesar de estarem correlacionados. Os
+resultados de identificabilidade estrutural (Seção \ref{identificability}) reforçam a necessidade da obtenção
+da curva de recuperados, enquanto na identificabilidade prática (Seção \ref{identificability-practical}),
+sugerem que outra abordagem para estimar as curvas de transmissibilidade e
+mortalidade deve ser tomada. A despeito disso, a adoção de limites nos parâmetros permitiu
+uma estimação mais precisa, inclusive quando os parâmetros previamente fixados
+variavam (ver Tabela \ref{tab:range-parameters}). 
+
+O número reprodutivo básico como função do tempo mostrou ter um comportamento
+similar às outras estimativas, como mencionado em \ref{residual-analysis}. A
+pouca variabilidade deve-se à suavidade induzida pelas B-splines. Para
+construir uma curva mais suscetível a mudanças diárias, uma aproximação por
+outro método deve ser adotada. Por fim, a aparente subestimação da incerteza
+nessa curva deriva dessa problemática. Outras fontes de incerteza podem ser
+adicionadas ao Bootstrap em trabalhos futuros. 
+
+\section{Agradecimentos}
+
+Gostaria de agradecer à Orientadora do trabalho Maria Soledad Aronna
+(FGV/EMAp, Rio de Janeiro) pela
+compreensão e aconselhamento ao longo do processo. Agradecer também aos
+professores Roberto Guglielmi (Universidade de Waterloo, Canadá) e Luiz Max de
+Carvalho (FGV/EMAp, Rio de Janeiro) pela contribuição em
+tópicos importantes. Essa iniciação científica foi apoiada pela FAPERJ
+(Brasil) através do Programa ``Jovem Cientista do Nosso Estado'' e pelo CNPq
+(Brasil) através do Programa ``Iniciação Científica e Mestrado'' (PICME). 

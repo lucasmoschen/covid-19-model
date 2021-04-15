@@ -1,0 +1,94 @@
+Definimos um modelo compartimental \cite{aronna2021} a fim de descrever o espalhamento do vírus SARS-CoV-2 que comporta medidas não farmacêuticas  adotadas como forma de combate ao surto. 
+Repartimos a população nos compartimentos $S$, $E$, $I$, $A$, $Q$, $R$ e $D$ de forma que um indivíduo suscetível ao vírus inicia em $S$ e após entrar em contato com um infeccioso, passa para o compartimento $E$, onde apesar de infectado, não infecta outros por um período latente.
+Após esse tempo, o indivíduo se torna infeccioso e vai para o compartimento $I$, tal que, com um certo tempo, ele pode ser reportado, e ir para o compartimento $Q$, ou pode não ser reportado e ser encaminhado para $A$. 
+Por fim, esses indivíduos se recuperam da doença no compartimento $R$ e aqueles casos que estão em quarentena podem ir para o compartimento $D$ se morrerem. 
+
+Consideramos a população normalizada, portanto cada compartimento representa a proporção correspondente. 
+Também removemos as taxas de nascimento e mortes naturais devido ao espaço curto de tempo que pretendemos modelar. 
+A dinâmica é descrita da seguinte forma: 
+
+\begin{equation}\label{eq:SEIRwQ}
+    \begin{array}{l}
+        \Dot{E} = \beta(t) S (I + A) - \rho(t) \delta E - \tau E \\[0.5ex]
+        \Dot{I} = \tau E - \sigma I - \rho(t) I \\[0.5ex]
+        \Dot{A} = \sigma\alpha I - \rho(t) A - \gamma_1 A \\[0.5ex]
+        \Dot{Q} = \sigma (1-\alpha) I  + \rho(t) (\delta E + I + A) - \gamma_2 Q - \mu Q \\[0.5ex]
+        \Dot{S} = -\beta(t) S (I + A) \\[0.5ex]
+        \Dot{R} = \gamma_1 A + \gamma_2 Q\\[0.5ex]
+        \Dot{D} = \mu Q
+    \end{array}
+\end{equation}
+
+Os parâmetros relacionados com o patogênico e com a doença induzida se
+encontram na Tabela \ref{Tab:ParPathogen}. 
+Assumimos que entre todos os infectados, uma proporção $\alpha \in (0,1)$ representa os casos não reportados que são, em geral, assintomáticos ou com sintomas leves. 
+Um indivíduo assintomático infecta tanto quanto outro sintomático e, se ele não for detectado, pode prolongar a duração do surto. 
+Essa é uma simplificação razoável, dado que estimar a contribuição
+dessa parcela é complicado, segundo \cite{nogrady}. 
+No modelo, $\beta(t)$ é a taxa de contato efetiva da doença no tempo $t$ e leva em conta a taxa média de contatos - diretamente afetada por medidas como isolamento social, proteção pessoal (uso de máscaras e higiene) e a cultura da região - e a transmissibilidade da doença - probabilidade de infecção dado um contato entre indivíduo infectado e outro suscetível. 
+
+Outra medida muito importante no combate ao espalhamento do vírus é a detecção através da testagem e posterior quarentena dos casos positivos.
+Em nosso modelo, $\rho(t)$ é a taxa de testagem de pessoas assintomáticas ou com sintomas leves no tempo $t$. 
+Assumimos que uma pessoa nos compartimentos $I$ ou $A$ sempre testam positivo, em $S$ sempre negativo e em $E$ positivo com uma probabilidade $\delta$. Os falsos negativos são desconsiderados do modelo, apesar de prejudicarem a estimativa de $\rho$. Essa consideração foi feita como forma de simplificação, mas pode ser alterada considerando a incerteza sobre a testagem (ver \cite[Remark 2.3]{aronna2021} para mais detalhes). 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+ {\bf Par.} & {\bf Descrição} \\[0.5ex]
+\hline
+  $ \tau^{-1}$  & tempo latente da exposição ao inicío da
+  infecciosidade. \\[0.3ex]
+\hline
+    $\sigma^{-1}$ & 
+    tempo entre o início da infeciosidade e o possível início dos sintomas
+    \\[0.3ex]
+\hline
+     $\omega^{-1}$ & tempo de incubação (i.e. $\omega^{-1} = \tau^{-1} + \sigma^{-1} $)
+     \\[0.3ex]
+\hline
+    $\gamma_1$ & taxa de recuperação de casos menos graves\\[0.3ex]
+\hline
+    $\gamma_2$ & taxa de recuperação de casos mais graves \\[0.3ex]
+\hline
+    $\mu$ & taxa de mortalidade entre os casos confirmados\\[0.3ex]
+\hline
+\end{tabular}
+\caption{Parâmetros {COVID-19}}
+\label{Tab:ParPathogen}
+\end{table}
+
+Adicionamos um contador de testes positivos $T(t)$, através da equação
+\begin{equation}
+    \label{counting}
+    \dot T = \sigma(1-\alpha)I + \rho(t) (\delta E + I + A) 
+\end{equation}
+
+Como a curva $T$ é a que temos acesso nos dados, além da curva de mortes $D$, usaremos ela como referência para a estimação dos parâmetros. Também assumiremos que a política de testagem na cidade é constante ao longo do tempo, e, portanto $\rho(t) \equiv \rho$, como justificado na Observação \ref{estimativa-rho}. Outra aplicação possível do modelo,
+explicitada no artigo de referência \cite{aronna2021}, é verificar o que a
+variação desse parâmetro pode causar na epidemia. 
+
+\subsection{O número reprodutivo básico}
+\label{sec:R0}
+
+Como discutido em \cite{aronna2021}, considerando os coeficientes constantes,
+podemos determinar o número básico reprodutivo $\mathcal{R}_0$ associado ao
+modelo. 
+
+\begin{equation}\label{R0wheneps=0}
+\mathcal{R}_0 = \frac{1}{2}\left(
+\varphi + \sqrt{\varphi^2 + \frac{4\sigma\alpha}{\rho + \gamma_1}\varphi}\;
+\right)\, ,
+\end{equation}
+com
+\begin{equation}
+\label{varphi}
+    \varphi = \frac{\beta \tau}{(\rho\delta + \tau)(\sigma + \rho)}\ .
+\end{equation}
+
+Com a evolução da epidemia, a porção da população recuperada e imune à doença torna-se relevante, o que diminui o número reprodutivo. Assim definimos o número
+reprodutivo dependente do tempo $\mathcal{R}(t)$ que decresce conforme a população suscetível ($S(t)$) decresce. Em particular, a expressão de
+$\varphi$ in \eqref{varphi} é alterada para 
+\begin{equation}
+    \varphi(t) = \frac{\beta(t) \tau S(t)}{(\rho\delta + \tau)(\sigma + \rho)}.
+\end{equation}

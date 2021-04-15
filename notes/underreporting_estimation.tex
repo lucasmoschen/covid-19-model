@@ -1,0 +1,91 @@
+% !TeX spellcheck = pt_BR
+\documentclass[a4,11pt]{pssbmac}
+
+\usepackage[brazil]{babel}     
+\usepackage[utf8]{inputenc}   
+
+\usepackage{graphics}
+\usepackage{subfigure}
+\usepackage{graphicx, float}
+\usepackage[centertags]{amsmath}
+\usepackage{indentfirst,amsfonts,amssymb,amsthm,newlfont}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{cite}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{booktabs}
+\usepackage{url}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\Urlmuskip=0mu  plus 10mu
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand*\comment{\color{blue}}
+
+\newtheorem{obs.}{Observação}[section]
+
+\begin{document}
+
+%********************************************************
+\title{Estimativa da taxa de subnotificação de casos de COVID-19 na cidade do Rio de Janeiro no início da pandemia}
+
+\author{
+    {\large Lucas Machado Moschen}\thanks{lucas.moschen@fgv.edu.br} \\
+    {\small EMAp/FGV, Rio de Janeiro, RJ} \\
+    {\large Orientadora: Maria Soledad Aronna}\thanks{soledad.aronna@fgv.edu.br}\\
+    {\small EMAp/FGV, Rio de Janeiro, RJ} \\
+}
+
+\criartitulo
+
+\begin{abstract}
+
+\input{files/abstract}
+
+\end{abstract}
+
+\section{Introdução}
+
+\input{files/introduction}
+
+\section{Apresentação do modelo}
+\label{apresentation}
+
+\input{files/model}
+
+\section{Dados}
+\label{data}
+
+\input{files/data}
+
+\section{Estimativa dos parâmetros}
+\label{parameters}
+
+\input{files/estimation}
+
+\subsection{Identificabilidade}
+\label{identificability}
+\input{files/identificability}
+
+\subsection{Ajuste nos dados}
+
+\input{files/data_fitting}
+
+\subsection{Quantificando incerteza sobre os parâmetros}
+
+\input{files/bootstrapping}
+
+\section{Conclusão}
+\label{conclusion}
+
+\input{files/conclusion}
+
+\begin{thebibliography}{00}
+
+\input{files/bibliograpy}
+
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,40 @@
+O primeiro passo após a concepção do modelo é analisar sua {\em identificabilidade}, porque a estimação pode variar dependendo de quando o problema é ou não bem-posto. 
+De forma geral, essa análise identifica se os parâmetros desconhecidos podem ser estimados de forma única \cite{audoly2001, sarcomani2019}. 
+Existem duas formas de fazer essa análise: a forma estrutural (a priori) e a forma prática (a posteriori). 
+A primeira é uma propriedade teórica que reside na própria estrutura do modelo. Os parâmetros são {\em estruturalmente identificáveis} se eles podem ser unicamente estimados a partir do experimento desenvolvido e são chamados {\em localmente estruturalmente identificáveis} se essa característica é verificada em torno do ponto ótimo. 
+A segunda é feita após o processo de ajuste de dados, quando outros problemas podem aparecer em relação ao ruído encontrado na informação. Em particular, utilizaremos a {\em matriz de correlação} dos parâmetros.
+
+Conforme descrito em \cite{ljung1994}, considere um sistema dinâmico
+\begin{equation}
+    \begin{aligned}
+        \Dot{x} &= f(x(t), \theta), &x(0) = x_0 \\
+        y(t) &= h(x(t), \theta)
+    \end{aligned}
+\end{equation}
+em que $x(t) \in \R^n, y(t) \in \R^m$ e $f$ e $h$ são vetores de funções racionais da variável $x$ e $\theta \in \Theta \subset \R^p$. 
+A variável $y$ é observável e no nosso modelo é indicada pelos casos confirmados e mortes. 
+Quando $x(0) = x_0$, denotamos $y = \psi_{x_0}(\theta, u)$ como a observação com esse valor inicial. 
+O objetivo é contar o número de soluções da equação:
+\begin{equation}
+     \label{identificability-equation}
+     \psi_{x_0}(\theta, u) =  \psi_{x_0}(\theta^*, u).
+\end{equation}
+Dizemos que esse modelo é {\em globalmente identificável} na solução $\theta ^*$ se a equação \eqref{identificability-equation} tem solução única $\theta = \theta^*$, para todo tempo $s$. 
+Ele será {\em localmente identificável} se essa propriedade valer em uma vizinhança de $\theta ^*$. Aplicamos um método computacional de identificabilidade estrutural através do programa DAISY \cite{bellu2007}.
+
+\subsubsection{DAISY - Differential Algebra for Identifiability of SYstems}
+
+DAISY é um {\it software}, com base na linguagem de programação {\it Reduce},
+específico para o problema de identificabilidade em sistemas dinâmicos, com
+algumas condições brandas para a utilização. 
+Se o modelo possui essas condições, a codificação e manuseio são fáceis, o que é
+uma vantagem quando queremos aplicar os algoritmos algébricos envolvidos. 
+Tratamos todos os parâmetros do modelo indicados na Seção \ref{apresentation} como
+invariantes no tempo. 
+Supondo o conhecimento da curva de recuperados $R$, o problema foi considerado
+globalmente identificável. 
+Infelizmente esses dados não são completamente disponíveis, conforme destacado
+na Seção \ref{data-analysis} e na ausência deles,  o {\it software} não conseguiu
+resolver em pelo menos 3 dias, e, portanto, decidimos não continuar por esse 
+caminho. 
+O código pode ser encontrado no Github \cite{github}.
