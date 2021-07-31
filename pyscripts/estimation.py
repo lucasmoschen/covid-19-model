@@ -56,7 +56,7 @@ class Fitting:
         self.mu = BSpline(self.knots_mu, np.zeros(self.smu), self.order_mu)
 
         # Calculate initial conditions
-        print('Model SEIAQR for Covid-19')
+            ('Model SEIAQR for Covid-19')
         print('-------------------------')
         print('Estimating initial Conditions...')
         self.initial_conditions()
