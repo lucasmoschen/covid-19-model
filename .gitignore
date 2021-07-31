@@ -2,7 +2,6 @@ notes/.vscode
 data/variables
 pyscripts/__pycache__
 .ipynb_checkpoints/
-
 *.svg
 *.out
 *.aux
