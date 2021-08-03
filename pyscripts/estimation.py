@@ -295,13 +295,45 @@ class Fitting:
                 f.write('\n')
         
         
-# if __name__ == '__main__': 
+if __name__ == '__main__': 
 
-#     p = [0.3125, 0.5, 2e-5, 1, 1/9.5, 1/18]
-#     beta = {'sbeta': 4, 'bspline_order': 3}
-#     model = Fitting(p, beta)
+    tau    = 1/3.69
+    omega  = 1/5.74
+    sigma  = 1/(1/omega - 1/tau)
+    rho    = 1e-5
+    delta  = 0.01
+    gamma1 = 1/7.5
+    gamma2 = 1/13.4
+    psi = 119.56329270977567
 
-#     psi = 0
-#     bounds = [(0.7,0.95), (0.05,0.3), (0.05,0.3), (0.05,0.3), (0.05,0.3), (0, 0.2)] # bound the parameters
-#     x0 = [0.9, 0.1, 0.1, 0.1, 0.1, 0.12/14]  # initial guess
-#     theta = model.fit(psi, x0, bounds)
+    p = [tau, sigma, rho, delta, gamma1, gamma2]
+
+    # sbeta is number of coefficients, bspline order speaks for itself
+    time_varying = {'beta': {'coefficients':  4, 'bspline_order': 3}, 
+                'mu'  : {'coefficients': 4, 'bspline_order': 3}}
+
+    # initial and final day in the model
+    initial_day = '2020-03-16'
+    final_day = '2020-07-31'
+
+    # initial conditions guesses and bounds
+    init_cond = {'x0': [0.8, 0.3, 5e-7, 5e-7, 5e-7], 
+                'bounds': [(0.5,1), (0,1), (1e-7, 5e-5), (1e-7, 5e-5), (1e-7, 5e-5)]}
+    # hmax
+    hmax = 0.2
+
+    # bound the parameters
+    bounds = [(0.7, 0.95), 
+            (0.05, 0.2), (0.05, 0.2), (0.05, 0.2), (0.05, 0.2), 
+            (0.005, 0.02), (0.005,0.02), (0.005, 0.02), (0.005, 0.02)] 
+
+    # initial guess
+    x0 = [0.9,                        # alpha
+        0.11, 0.08, 0.09, 0.12,     # beta
+        0.015, 0.015, 0.011, 0.009] # mu
+
+    # defines the model
+    model = Fitting(p, time_varying, initial_day, final_day, hmax, init_cond)
+
+    # estimating theta
+    theta = model.fit(psi, x0, bounds)
