@@ -19,7 +19,7 @@ class Fitting:
     Fitting of the model's curve to Rio data to obtain the estimated values for
     the parameters in the initial period of the pandemic.
     p: (tau, sigma, rho, delta, gamma1, gamma2).
-    tyme_varying: definitions about beta and mu bspline (knots, number of parameters and order)
+    time_varying: definitions about beta and mu bspline (knots, number of parameters and order)
     hmax: max value Runge Kutta integration method. 
     """
 
@@ -44,7 +44,7 @@ class Fitting:
         self.D = df['deaths'].loc[initial_day:final_day].to_numpy()
         self.tf = len(self.T)
         
-        # time-varying hiperparameters
+        # time-varying hyperparameters
         self.sbeta = time_varying['beta']['coefficients']
         self.order_beta = time_varying['beta']['bspline_order']
         self.smu = time_varying['mu']['coefficients']
@@ -56,7 +56,7 @@ class Fitting:
         self.mu = BSpline(self.knots_mu, np.zeros(self.smu), self.order_mu)
 
         # Calculate initial conditions
-            ('Model SEIAQR for Covid-19')
+        print('Model SEIAQR for Covid-19')
         print('-------------------------')
         print('Estimating initial Conditions...')
         self.initial_conditions()
@@ -107,13 +107,13 @@ class Fitting:
         repro_number = np.zeros(shape = (2, self.tf))
 
         beta_ = self.beta.construct_fast(self.knots_beta, theta[1:1+self.sbeta], self.order_beta)
-        mu_ = self.mu.construct_fast(self.knots_mu, theta[-self.smu:], self.order_mu)
+        #mu_ = self.mu.construct_fast(self.knots_mu, theta[-self.smu:], self.order_mu)
         alpha = theta[0]
         tau, sigma, rho, delta, gamma1, _ = self.p
 
         for t in range(self.tf): 
             beta = max(beta_(t), 0)
-            mu = max(mu_(t),0)
+            #mu = max(mu_(t),0)
             varphi = np.array([beta*tau, beta*tau*S[t]]) # difference between R0 and Rt
             varphi /= ((rho*delta + tau)*(sigma + rho))
             r0_rt = 1/2*(varphi + np.sqrt(varphi**2 + varphi*(4*sigma*alpha)/(rho + gamma1)))
